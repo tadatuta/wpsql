@@ -1,0 +1,26 @@
+{
+  "name": "wpsql",
+  "description": "MySQL wrapper for WordPress",
+  "private": true,
+  "version": "0.0.1",
+  "author": {
+    "name": "Vladimir Grinenko",
+    "email": "i@tadatuta.com"
+  },
+  "dependencies": {
+    "mysql": "2.0.0-alpha3"
+  },
+  "devDependencies": {
+  },
+  "keywords": [
+    "wordpress",
+    "mysql"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/tadatuta/wpsql.git"
+  },
+  "engines": {
+    "node": "*"
+  }
+}
