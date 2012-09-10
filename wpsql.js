@@ -1,5 +1,7 @@
 var mysql = require('mysql');
 
+var cache = {};
+
 var wpsql = {
     connect: function(host, user, password, db, prefix) {
         this.prefix = prefix;
@@ -23,9 +25,18 @@ var wpsql = {
             params = null;
         }
 
+        serializeParams = JSON.stringify(params);
+        if (cache.getPosts && cache.getPosts[serializeParams]) {
+            callback && callback(cache.getPosts[serializeParams]);
+            return;
+        }
+
         this.connection.query('SELECT * FROM ' + this.prefix + 'posts', function(err, rows, fields) {
             if (err) throw err;
 
+            console.log('read from DB');
+            cache.getPosts = cache.getPosts || {};
+            cache.getPosts[serializeParams] = rows;
             callback && callback(rows);
         });
     },
@@ -35,9 +46,17 @@ var wpsql = {
             params = null;
         }
 
+        serializeParams = id;
+        if (cache.getPostById && cache.getPostById[serializeParams]) {
+            callback && callback(cache.getPostById[serializeParams]);
+            return;
+        }
+
         this.connection.query('SELECT * FROM ' + this.prefix + 'posts WHERE ID = "' + id + '"', function(err, rows, fields) {
             if (err) throw err;
 
+            cache.getPostById = cache.getPostById || {};
+            cache.getPostById[serializeParams] = rows;
             callback && callback(rows);
         });
     },
