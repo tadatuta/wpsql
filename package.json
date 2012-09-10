@@ -12,6 +12,7 @@
   },
   "devDependencies": {
   },
+  "main": "./wpsql.js",
   "keywords": [
     "wordpress",
     "mysql"
