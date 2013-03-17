@@ -30,15 +30,42 @@ var wpsql = {
         });
     },
     getPostById: function(id, callback) {
-        if (arguments.length == 1) {
-            callback = params;
-            params = null;
-        }
-
         this.connection.query('SELECT * FROM ' + this.prefix + 'posts WHERE ID = "' + id + '"', function(err, rows, fields) {
             if (err) throw err;
 
             callback && callback(rows);
+        });
+    },
+    getPostByPostName: function(post_name, callback) {
+        this.connection.query('SELECT * FROM ' + this.prefix + 'posts WHERE post_name = "' + post_name + '"', function(err, rows, fields) {
+            if (err) throw err;
+
+            callback && callback(rows);
+        });
+    },
+    getIdByPostName: function(post_name, callback) {
+        this.connection.query('SELECT ID FROM ' + this.prefix + 'posts WHERE post_name = "' + post_name + '"', function(err, rows, fields) {
+            if (err) throw err;
+
+            callback && callback(rows[0].ID);
+        });
+    },
+    getMetaByPostId: function(post_id, meta_key, callback) {
+        if (arguments.length == 2) {
+            callback = meta_key;
+            meta_key = null;
+        }
+
+        var and = meta_key ? ' AND meta_key = "' + meta_key + '"' : '';
+
+        this.connection.query('SELECT meta_value FROM ' + this.prefix + 'postmeta WHERE post_id = "' + post_id + '"' + and, function(err, rows, fields) {
+            if (err) throw err;
+
+            if (!callback) return;
+
+            meta_key || callback(rows);
+            meta_key && callback(rows[0].meta_value);
+
         });
     },
     closeConnection: function() {
