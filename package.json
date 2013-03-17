@@ -8,7 +8,7 @@
     "email": "i@tadatuta.com"
   },
   "dependencies": {
-    "mysql": "2.0.0-alpha3"
+    "mysql": "2.0.0-alpha7"
   },
   "devDependencies": {
   },
